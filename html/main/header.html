@@ -1,0 +1,79 @@
+<header class="bg_bog">
+    <div class="header">
+        <div class="headertop">
+            <ul class="information">
+                
+                <!--@nif(login_block)-->
+                <li><a href="/main/login.jsp">로그인</a></li>
+                <li><a href="/main/signup.jsp">회원가입</a></li>
+                <!--/nif(login_block)-->
+                <!--@if(login_block)-->
+                <li><a href="/main/logout.jsp">로그아웃</a></li>
+                <!--/if(login_block)-->
+                <li><a href="/main/cart.jsp">장바구니</a></li>
+                <li><a href="/main/mypage.jsp">마이페이지</a></li>
+            </ul>
+        </div>
+        <div class="headermiddle">
+            <h1 class="logo"><a href="/main/index.jsp"><img src="/html/imges/login/로고.png" alt="로고"></a></h1>
+            <h1 class="gr NSEB">건강한 교육사역 몰</h1>
+            <div class="search_bar">
+                <form name="search_form" method="get" action="/main/search.jsp">
+                    <input type="text" name="qw" placeholder="search">
+                    <input type="submit" value="검색" class="bg_bgr" src="/main/serch.jsp">
+                </form>
+            </div>
+            <div class="hidden_nav small_nav"><i class="fa-solid fa-bars"></i></div>
+        </div>
+        <div class="headerbottom">
+            <nav class="category">
+                <ul class="lv1"> 
+                    <!--@loop(main_category1)-->
+                    <li><a href="/main/category.jsp?cid={{main_category1.id}}&pid={{main_category1.parent}}">{{main_category1.name}}</a>
+                        <ul class="lv2">
+                            <!--@loop(sub_category1)-->
+                            <li><a href="/main/category.jsp?cid={{sub_category1.id}}&pid={{sub_category1.parent}}">{{sub_category1.name}}</a></li>
+                            <!--/loop(sub_category1)-->
+                        </ul>
+                    </li>
+                    <!--/loop(main_category1)-->
+                    <!--@loop(main_category2)-->
+                    <li><a href="/main/category.jsp?cid={{main_category2.id}}&pid={{main_category2.parent}}">{{main_category2.name}}</a>
+                        <ul class="lv2">
+                            <!--@loop(sub_category2)-->
+                            <li><a href="/main/category.jsp?cid={{sub_category2.id}}&pid={{sub_category2.parent}}">{{sub_category2.name}}</a></li>
+                            <!--/loop(sub_category2)-->
+                        </ul>
+                    </li>
+                    <!--/loop(main_category2)-->
+                    <!--@loop(main_category3)-->
+                    <li><a href="/main/category.jsp?cid={{main_category3.id}}&pid={{main_category3.parent}}">{{main_category3.name}}</a>
+                        <ul class="lv2">
+                            <!--@loop(sub_category3)-->
+                            <li><a href="/main/category.jsp?cid={{sub_category3.id}}&pid={{sub_category3.parent}}">{{sub_category3.name}}</a></li>
+                            <!--/loop(sub_category3)-->
+                        </ul>
+                    </li>
+                    <!--/loop(main_category3)-->
+                    <!--@loop(main_category4)-->
+                    <li><a href="/main/category.jsp?cid={{main_category4.id}}&pid={{main_category4.parent}}">{{main_category4.name}}</a>
+                        <ul class="lv2">
+                            <!--@loop(sub_category4)-->
+                            <li><a href="/main/category.jsp?cid={{sub_category4.id}}&pid={{sub_category4.parent}}">{{sub_category4.name}}</a></li>
+                            <!--/loop(sub_category4)-->
+                        </ul>
+                    </li>
+                    <!--/loop(main_category4)-->
+                    <li><a href="/board/list.jsp?id=1">게시판</a>
+                        <ul class="lv2">
+                            <!--@loop(boards)-->
+                            <li><a href="/board/list.jsp?id={{boards.id}}">{{boards.name}}</a></li>
+                            <!--/loop(boards)-->
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+{{form_script}}

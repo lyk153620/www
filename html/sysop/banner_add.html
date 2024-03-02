@@ -1,0 +1,64 @@
+<div class="wrap">
+    <div class="small_header">
+        <h1>배너 등록</h1>
+    </div>
+    <div class="manage_wrap">
+        <form method="post" name="form1" class="manage_form">
+            <table class="manage_table">
+                <tbody>
+                    <tr>
+                        <td>위치</td>
+                        <td><select name="purpose">
+                                <option>배너 위치</option>    
+                                <option value="1">메인화면 가로</option>
+                                <option value="2">세로</option>
+                            </select></td>
+                    </tr>
+                    <tr>
+                        <td>배너명</td>
+                        <td><input type="text" name="alt"></td>
+                    </tr>
+                    <tr>
+                        <td>상품 이미지 URL</td>
+                        <td><input type="file" name="img" id="imageInput" accept="image/png, image/jpeg" onchange="previewImage(this)">
+                            <img id="imagePreview" src="#" alt="your image" style="display: none;" class="w400" /></td>
+                    </tr>
+                    <tr>
+                        <td>게시여부</td>
+                        <td><select name="usage_status">
+                            <option value="Y">공개</option>
+                            <option value="N">비공개</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td>정렬순서</td>
+                        <td><input type="number" name="sort" value="10"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="add_button color_green">등록</button>
+            <button type="reset" class="add_button color_dark">초기화</button>
+            <button class="add_button color_dark"><a href="/sysop/banner_list.jsp">목록</a></button>
+        </form>
+        {{form_script}}
+    </div>
+    <div class="page_bar pd10">
+        {{pagebar}}
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#imageInput').on('change', function() {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    $('#imagePreview').attr('src', e.target.result).show();
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+</script>

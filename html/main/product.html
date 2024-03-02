@@ -1,0 +1,155 @@
+<div class="product wd12">
+    <div class="img_box"><img src="/html/imges/product/{{products.img}}" alt="판매 그림"></div>
+    <form name="form1" method="post">
+        <div class="detail">
+            <p>{{products.series}}</p>
+            <h1>{{products.name}}</h1>
+            <div class="under_line"></div>
+            <div class="price">
+                <div class="price_left">
+                    <p>판매 가격</p>
+                    <p>소비자 가격</p>
+                    <p>수량</p>
+                    <p>배송비(5만원 이상 무료)</p>
+                    <p>최종가격</p>
+                </div>
+                <div class="price_right">
+                    <input type="hidden" name="product_id" value="{{products.id}}">
+                    <p><span id="retail_price_product">{{products.retail_price_conv}}</span></p>
+                    <p><span id="price_product">{{products.price_conv}}</span></p>
+                    <p><input type="number" value="1" min="1" id="quantity" name="count"></p>
+                    <p>3,000원</p>
+                    <p><span id="total">13,800</span></p>
+                </div>
+            </div>
+            <div class="under_line"></div>
+            <div class="order">
+                <button type="submit" onclick="goCart(event)">장바구니</button>
+                <button type="submit">구매하기</button>
+            </div>
+        </div>
+    </form>
+    {{form_script}}
+    <script>
+    function goCart(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        var form = event.target.form;
+        var formData = new FormData(form);
+
+        fetch("/HCEM/main/cart_insert.jsp", {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(ret => {
+            if(ret === 'success') {
+                if(confirm("장바구니로 이동하시겠습니까?")) {
+                    location.href = '/HCEM/main/cart.jsp';
+                }
+            } else {
+                alert(ret);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    </script>
+</div>
+<div class="tab_list wd12">
+    <button class="product_tab_1"><a href="./product.jsp?id={{products.id}}">상품상세설명</a></button>
+    <button class="product_tab_2"><a href="./product.jsp?id={{products.id}}&purpose=4">상품리뷰(총 {{productCount1.count}}건)</a></button>
+    <button class="product_tab_3"><a href="./product.jsp?id={{products.id}}&purpose=5">상품문의(총 {{productCount2.count}}건)</a></button>
+</div>
+<div class="wd12">
+    <div class="product_tab product_tab_1 product_content active">{{products.content}}</div>
+    <div class="product_tab product_tab_2 product_review hidden">
+        <table class="product_review product_table list_table">
+            <tr>
+                <th colspan="4">상품리뷰</th>
+            </tr>
+            <tr>
+                <td class="table_id list_md">No.</td> 
+                <td class="table_writer list_md">글쓴이</td> 
+                <td class="table_content">내용</td> 
+                <td class="table_regdate">작성 날짜</td> 
+            </tr>
+        <!--@loop(productReview)-->
+            <tr>
+                <td class="table_id list_md">{{productReview.__ord}}</td> 
+                <td class="table_writer list_md">{{productReview.writer}}</td> 
+                <td class="table_content">{{productReview.content}}</td>
+                <td class="table_regdate">{{productReview.reg_date_conv}}</td>
+            </tr>
+        <!--/loop(productReview)-->
+        </table>
+    </div>
+    <div class="product_tab product_tab_3 product_question hidden">   
+        <table class="product_question product_table list_table">
+            <tr>
+                <th colspan="3">상품문의</th>
+            </tr>
+            <tr>
+                <td class="table_id list_md">No.</td> 
+                <td class="table_writer list_md">글쓴이</td> 
+                <td class="table_content">질문</td>
+            </tr>
+        <!--@loop(productReview)-->
+            <tr>
+                <td class="table_id list_md">{{productReview.__ord}}</td> 
+                <td class="table_writer list_md">{{productReview.writer}}</td> 
+                <td class="table_content">{{productReview.content}}</td>
+            </tr>
+        <!--/loop(productReview)-->
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+// 수량과 가격에 기반한 총 금액 업데이트
+function updateTotalPrice() {
+        var quantity = extractNumber($("#quantity").val());
+        var productPrice = extractNumber($("#price_product").text());
+        var retailPrice = extractNumber($("#retail_price_product").text());
+        var totalPrice = (productPrice * quantity) + 3000;
+
+        $("#price_product").text(convertToKoreanCurrency(productPrice));
+        $("#total").text(convertToKoreanCurrency(totalPrice));
+        $("#retail_price_product").text(convertToKoreanCurrency(retailPrice));
+    }
+
+    $("#quantity").on("input", updateTotalPrice);
+
+    // URL 매개변수에 따른 탭 표시
+    function showTabFromURL() {
+        var purpose = new URLSearchParams(window.location.search).get('purpose');
+        $('.product_tab').hide();
+
+        if (purpose === '4') {
+            $('.product_tab_2').show().removeClass('hidden');
+        } else if (purpose === '5') {
+            $('.product_tab_3').show().removeClass('hidden');
+        } else {
+            $('.product_tab_1').show().removeClass('hidden');
+        }
+    }
+
+    showTabFromURL();
+
+    // 탭 버튼 클릭 처리
+    $('.product_tab_1 button').click(function() {
+        history.pushState(null, null, './product.jsp?id={{product.id}}&purpose=1');
+    });
+
+    $('.product_tab_2 button').click(function() {
+        history.pushState(null, null, './product.jsp?id={{product.id}}&purpose=4');
+    });
+
+    $('.product_tab_3 button').click(function() {
+        history.pushState(null, null, './product.jsp?id={{product.id}}&purpose=5');
+    });
+
+    updateTotalPrice();
+});
+</script>

@@ -1,0 +1,44 @@
+<div class="content">
+    <h1 class="gr animation_awd_4006">{{category_title.name}}</h1>
+    <ul class="category_nav animation_awd_4006">
+        <!--@loop(category_list)-->
+        <li><a href="/main/category.jsp?cid={{category_list.id}}&pid={{category_list.parent}}" class="{{category_list.on}}">{{category_list.name}}</a></li>
+        <!--/loop(category_list)--> 
+    </ul>
+    <ul class="best animation_awd_5806">
+        <!--@loop(products)-->
+        <li>
+            <a href="./product.jsp?id={{products.id}}">
+                <img src="/html/imges/product/{{products.img}}" alt="상품 아이템" class="t1">
+                <div class="caption">
+                    <p><b>{{products.series}}</b></p>
+                    <p>{{products.name}}</p>
+                    <p id="productPrice">{{products.price}}</p>
+                </div>
+            </a>
+        </li>
+        <!--/loop(products)-->
+    </ul>
+    <div class="page_bar">
+        {{pagebar}}
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 각 상품 가격을 한국 원화로 표기하는 함수
+        function formatKRW(price) {
+            return Number(price).toLocaleString('ko-KR') + "원";
+        }
+
+        // 각 상품에 대한 처리
+        $(".best li").each(function() {
+            var priceElement = $(this).find("#productPrice");
+            var priceValue = priceElement.text();
+            var formattedPrice = formatKRW(priceValue);
+
+            // 한국 원화로 표기된 가격으로 업데이트
+            priceElement.text(formattedPrice);
+        });
+    });
+</script>

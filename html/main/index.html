@@ -1,0 +1,63 @@
+<div class="slide animation_awd_5806">
+    <ul class="slider">
+        <!--@loop(banners)-->
+        <li><img src="/html/imges/B/{{banners.img}}" alt="{{banners.alt}}"></li>
+        <!--/loop(banners)-->
+    </ul>
+</div>
+<div class="content animation_awd_4006">
+    <h1 class="gr">교육사역 몰의 Best 상품</h1>
+    <ul class="best">
+        <!--@loop(products)-->
+        <li>
+            <a href="/main/product.jsp?id={{products.id}}">
+                <img src="/html/imges/product/{{products.img}}" alt="상품 아이템" class="t1">
+                <div class="caption">
+                    <p><b>{{products.series}}</b></p>
+                    <p>{{products.name}}</p>
+                    <p id="productPrice">{{products.price}}</p>
+                </div>
+            </a>
+        </li>
+        <!--/loop(products)-->
+    </ul>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        
+        var currentSlide = 0;
+        var $slider = $(".slider li");
+        var totalSlides = $slider.length;
+
+        function showSlide(index) {
+            $slider.removeClass("active").addClass("hidden");
+            $slider.eq(index).addClass("active").removeClass("hidden");
+        }
+
+        // 초기 슬라이드 표시
+        showSlide(currentSlide);
+
+        // 자동 슬라이드 설정 (5초마다)
+        setInterval(function() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+            }, 5000);
+        
+        // 각 상품 가격을 한국 원화로 표기하는 함수
+        function formatKRW(price) {
+            return Number(price).toLocaleString('ko-KR') + "원";
+        }
+
+        // 각 상품에 대한 처리
+        $(".best li").each(function() {
+            var priceElement = $(this).find("#productPrice");
+            var priceValue = priceElement.text();
+            var formattedPrice = formatKRW(priceValue);
+
+            // 한국 원화로 표기된 가격으로 업데이트
+            priceElement.text(formattedPrice);
+        });
+        
+    });
+</script>

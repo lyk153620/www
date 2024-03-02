@@ -1,0 +1,191 @@
+<div class="cart_navi wd12">
+    <ul>
+        <li>장바구니</li>
+        <li class="active color_sub5">주문/배송</li>
+        <li>결제</li>
+        <li>주문완료</li>
+    </ul>
+</div>
+<div class="content wd12">
+    <div class="order_infor">
+        <ul class="">
+            <li class="big_li"><p>주문 상품 정보</p></li>
+            <li>
+                <table class="table_order">
+                    <colgroup>
+                        <col class="w100">
+                        <col class="w100">
+                        <col class="w100">
+                        <col class="w100">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>상품명</th>
+                            <th>가격</th>
+                            <th>수량</th>
+                            <th>상품합계금액</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--@loop(order)-->
+                        <tr>
+                            <td>{{order.name}}</td>
+                            <td>{{order.price_conv}}원</td>
+                            <td>{{order.count}}개</td>
+                            <td>{{order.product_price_conv}}원</td>
+                        </tr>
+                        <!--/loop(order)-->
+                    </tbody>
+                </table>
+            </li>
+            <li>
+                <p>총 결제 예상금액: <span class="red">{{order.total_conv}}원</span></p>
+            </li>
+            <li class="big_li"><p>배송지 정보 입력<span class="red">(*필수 입력 항목)</span></p></li>
+            <li>
+                <form name="form1" method="post">
+                    <table class="table_delivery_location">
+                        <colgroup>
+                            <col class="location_1">
+                            <col class="location_2">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>배송지 선택</td>
+                                <td class="delivery_location_1_4">
+                                    <input type="radio" id="delivery_location_1" value="1" name="delivery_location" checked><label for="delivery_location_1">새 주소 입력</label></li>
+                                    <input type="radio" id="delivery_location_2" value="2" name="delivery_location"><label for="delivery_location_2">배송주소록에서 선택</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="red">*</span>주문인</td>
+                                <td>{{userName}}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="red">*</span>배송지 이름</td>
+                                <td><input type="text" name="name" class="h30 tc"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="red">*</span>수령인</td>
+                                <td><input type="text" name="recipient" class="h30 tc"></td>
+                            </tr>
+                            <tr>
+                                <td><span class="red">*</span>수령인 전화번호</td>
+                                <td class="phone_number number"><input type="text" name="phone1" class="h30 tc" maxlength="3"><span class="mt15">-</span><input type="text" name="phone2" class="h30 tc" maxlength="4"><span class="mt15">-</span><input type="text" name="phone3" class="h30 tc" maxlength="4"></td>`
+                            </tr>
+                            <tr>
+                                <td><span class="red">*</span>주소</td>
+                                <td>
+                                    <ul class="address">
+                                        <li><input type="text" name="zone_code" class="zoneCode w230 h30 tc left-align" placeholder="우편번호" readonly><input type="button" value="주소검색" onclick="search_address();"></li>
+                                        <li><input type="text" name="road_address" class="roadAddress h30 tc left-align w300" placeholder="주소" readonly></li>
+                                        <li><input type="text" name="detail_address" class="detailAddress w300 h30 tc left-align" placeholder="상세 주소"></li>    
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+                <li class="next_button_li">
+                    <button type="submit" class="next_button_p">다음단계</button>
+                </li>
+            </form>
+            {{form_script}}
+        </ul>
+    </div>
+</div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    // 주소 찾기 api
+    function search_address() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var zoneCode = data.zonecode; // 우편번호
+                var roadAddress = data.roadAddress + ' (' + data.buildingName + ')'; // 도로명 주소
+
+                // 우편번호와 도로명 주소를 입력란에 채워 넣기
+                $('.zoneCode').val(zoneCode);
+                $('.roadAddress').val(roadAddress);
+            }
+        }).open();
+    }
+
+    $(document).ready(function() {
+        // 팝업창으로 배송주소록 띄우기
+        $("#delivery_location_2").click(function() {
+            // 새로운 창을 열기
+            var popup = window.open('/main/address_list.jsp', '주소록', 'width=700, height=700');
+        }); // 여기에 괄호 추가
+
+        // 배송주소록에서 선택한 결과 가져오기
+        window.addEventListener("message", function(event) {
+            // 메시지가 올바른 출처에서 왔는지 확인 (보안을 위해)
+            if (event.origin !== window.location.origin) return;
+
+            // 전달된 데이터 확인
+            var selectedData = event.data;
+
+            // 핸드폰 '-'으로 나누어 배열로 저장
+            var phoneParts = selectedData.phone.split('-');
+
+            // 선택된 주소 출력
+            $('input[name="name"]').val(selectedData.name);
+            $('input[name="recipient"]').val(selectedData.recipient);
+            $('input[name="phone1"]').val(phoneParts[0]);
+            $('input[name="phone2"]').val(phoneParts[1]);
+            $('input[name="phone3"]').val(phoneParts[2]);
+            $('input[name="zone_code"]').val(selectedData.zoneCode);
+            $('input[name="road_address"]').val(selectedData.roadAddress);
+            $('input[name="detail_address"]').val(selectedData.detailAddress);
+        });
+
+        // 새 주소 입력을 누르면 기록된 데이터 지워지기
+        $("#delivery_location_1").click(function() {
+            $('input[name="name"]').val('');
+            $('input[name="recipient"]').val('');
+            $('input[name="phone1"]').val('');
+            $('input[name="phone2"]').val('');
+            $('input[name="phone3"]').val('');
+            $('input[name="zone_code"]').val('');
+            $('input[name="road_address"]').val('');
+            $('input[name="detail_address"]').val('');
+    });
+
+    $(document).ready(function() {
+    var navigatingAway = true;
+
+    // 다음 단계로 넘어가는 링크 클릭 시 navigatingAway를 false로 설정
+    $(".next_button_p").click(function() {
+        navigatingAway = false;
+    });
+
+    // 주문 데이터 삭제 함수
+    function orderReset() {
+        if (navigatingAway) {
+            var status = -1;
+            var formData = new FormData();
+            formData.append('status', status);
+
+            fetch("/main/order_reset.jsp", {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(text) {
+                if (text === "success") {
+                    location.replace("/main/cart.jsp");
+                    console.log(text);
+                } else {
+                    console.log(text);
+                }
+            });
+        }
+    }
+
+    // 주문하다가 벗어날 경우 데이터 삭제 함수 실행
+    $(window).on('beforeunload', orderReset);
+    });
+});
+</script>

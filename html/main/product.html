@@ -36,7 +36,7 @@
         var form = event.target.form;
         var formData = new FormData(form);
 
-        fetch("/HCEM/main/cart_insert.jsp", {
+        fetch("/main/cart_insert.jsp", {
             method: 'POST',
             body: formData
         })
@@ -44,7 +44,7 @@
         .then(ret => {
             if(ret === 'success') {
                 if(confirm("장바구니로 이동하시겠습니까?")) {
-                    location.href = '/HCEM/main/cart.jsp';
+                    location.href = '/main/cart.jsp';
                 }
             } else {
                 alert(ret);

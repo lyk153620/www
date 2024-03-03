@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/html/css/login_style.css?after">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <a href="/main/index.jsp"><img src="/html/imges/login/%EB%A1%9C%EA%B3%A0.png" class="logo" alt="로고"></a>
+            </div>
+        </header>
+        <form method="post" name="form1" class="signup">
+            <div class="login">
+                <ul>
+                    <li class="uid">
+                        <img src="/html/imges/login/사람.png" alt=사람">
+                        <input type="text" name="uid" placeholder="아이디(4자이상)" required>
+                        <button onclick="check_uid();">중복여부 확인</button>
+                    </li>
+                    <li class="upw"><img src="/html/imges/login/비밀번호.png" alt=비밀번호"><input type="password" name="upw" placeholder="비밀번호(6자 이상)"></li>
+                    <li class="upw2"><img src="/html/imges/login/비밀번호.png" alt=비밀번호"><input type="password" name="upw2" placeholder="비밀번호 확인" required></li>
+                    <li class="email"><img src="/html/imges/login/이메일.png" alt=이메일"><input type="email" name="email" placeholder="이메일"></li>
+                </ul>
+            </div>
+            <div class="information">
+                <ul>
+                    <li class="name"><img src="/html/imges/login/사람.png" alt=사람"><input type="text" name="name" placeholder="이름" required></li>
+                    <li class="birthday"><img src="/html/imges/login/캘린더.png" alt=캘린더"><input type="text" name='birthday' placeholder="생년월일 8자리" required></li>
+                    <li class="mobile_carrier"><img src="/html/imges/login/통신사.png" alt=통신사">
+                        <select name="mobile_carrier" id="mobile_carrier">
+                            <option>통신사 선택</option>
+                            <option value="1">KT</option>
+                            <option value="2">KT 알뜰폰</option>
+                            <option value="3">SKT</option>
+                            <option value="4">SKT 알뜰폰</option>
+                            <option value="5">LGU+</option>
+                            <option value="6">LGU+ 알뜰폰</option>
+                        </select>
+                    </li>
+                    <li class="gender">
+                            <input type="radio" id="gender_M" name="gender" value="gender_M">
+                            <label for="gender_M">남자</label>    
+                            <input type="radio" id="gender_F" name="gender" value="gender_F">
+                            <label for="gender_F">여자</label>
+                    </li>
+                    <li class="phone"><img src="/html/imges/login/휴대전화.png" alt=휴대전화"><input type="text" name="phone1" placeholder="휴대전화번호" maxlength="3" class="tc left-align" required><span class="mt15">-</span><input type="text" name="phone2"  maxlength="4" class="tc"><span class="mt15">-</span><input type="text" maxlength="4" name="phone3" class="tc">
+                    </li>
+                </ul>
+            </div>
+            <div class="agree">
+                <input type="checkbox" id="agree" name="agree" value="Y" required><label for="agree"><span class="gr">[필수]</span> 인증 약관 전체 동의</label>
+            </div>
+            <input type="submit" name="submit" id="submit" value="인증요청">
+        </form>
+        {{form_script}} 
+    </div> 
+</body>
+</html>
+
+<script>
+    function check_uid(){
+        event.preventDefault();
+        
+    }
+</script>

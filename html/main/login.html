@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="/html/css/login_style.css?after">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="login_top logo">
+            <a href="/main/index.jsp"><img src="/html/imges/login/%EB%A1%9C%EA%B3%A0.png" alt="로고" class="logo"></a>
+        </div>
+        <form name="form1" method="post" onsubmit="return doLogin(this)">
+            <div class="login_middle">
+                <ul>
+                    <li><input type="text" id="uid" name="uid" placeholder="아이디를 입력하세요" required autofocus></li>
+                    <li><input type="password" id="upw"  name="upw" placeholder="비밀번호를 입력하세요" required></li>
+                </ul>
+                <input type="submit" value="로그인" class="login_submit">
+            </div>
+        </form>
+        {{form_script}}
+    <script>
+        function doLogin(f) {
+            $.post("/main/login.jsp", $(f).serialize(), function(ret) {
+                if(ret == 'success') {
+                    location.href = '/main/index.jsp';
+                } else {
+                    alert(ret);
+                }
+            });
+            return false;
+        }
+    </script>
+        <div class="login_bottom">
+            <a href="">아이디 찾기</a>
+            <a href="">비밀번호 찾기</a>
+            <a href="/main/signup.jsp">회원가입</a>
+        </div>
+        <div class="easylogin">
+            <div class="naver"><a href=""><img src="/html/imges/login/네이버.jpeg" alt="네이버"></a></div>
+            <div class="kakao"><a href=""><img src="/html/imges/login/카톡.png" alt="카카오"></a></div>
+            <div class="google"><a href=""><img src="/html/imges/login/구글.png" alt="구글"></a></div>
+            <div class="twitter"><a href=""><img src="/html/imges/login/트위터.png" alt="트위터"></a></div>
+            <div class="samsungpass"><a href=""><img src="/html/imges/login/삼성패스.png" alt="삼성"></a></div>
+            <div class="apple"><a href=""><img src="/html/imges/login/애플.png" alt="애플"></a></div>
+        </div>
+        <footer name="login_footer">
+            <ul class="footer">
+                <li><a href="">이용약관</a></li>
+                <li><a href="">개인정보처리방침</a></li>
+            </ul>
+            <p>Copyright ⓒ2023 Healthy Education Ministry Mall. All rights reserved</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
